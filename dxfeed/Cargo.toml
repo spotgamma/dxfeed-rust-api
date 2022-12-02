@@ -1,0 +1,14 @@
+[package]
+name = "dxfeed"
+version = "0.1.2"
+edition = "2021"
+description = "Ergonomic serializable rust-wrappers around libdxfeed-sys"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.147", features = ["derive"] }
+thiserror = "1.0.37"
+widestring = "1.0.2"
+libdxfeed-sys = "0.1.2"

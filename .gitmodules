@@ -1,0 +1,3 @@
+[submodule "libdxfeed-sys/dxfeed-c-api"]
+	path = libdxfeed-sys/dxfeed-c-api
+	url = https://github.com/dxFeed/dxfeed-c-api.git

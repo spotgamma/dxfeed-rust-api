@@ -1,0 +1,15 @@
+[package]
+name = "libdxfeed-sys"
+version = "0.1.2"
+authors = ["John Watson <jrwats@gmail.com>"]
+edition = "2018"
+description = "rust bindings for dxfeed-c-api"
+license = "MIT"
+links = "DXFeed"
+
+[dependencies]
+serde = { version = "1.0.147", features = ["derive"] }
+
+[build-dependencies]
+bindgen = "0.63.0"
+cmake = "0.1.49"
