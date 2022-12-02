@@ -1,11 +1,12 @@
 [package]
 name = "libdxfeed-sys"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["John Watson <jrwats@gmail.com>"]
 edition = "2018"
 description = "rust bindings for dxfeed-c-api"
 license = "MIT"
 links = "DXFeed"
+repository = "https://github.com/spotgamma/dxfeed-rust-api"
 
 [dependencies]
 serde = { version = "1.0.147", features = ["derive"] }
