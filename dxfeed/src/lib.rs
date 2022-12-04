@@ -306,15 +306,15 @@ pub struct TimeAndSaleData {
     /// Aggressor side of this time and sale event
     pub side: dxf_order_side_t,
     /// Type of this time and sale event
-    pub type_: dxf_tns_type_t,
+    pub kind: dxf_tns_type_t,
     /// Whether this event represents a valid intraday tick
-    pub is_valid_tick: dxf_bool_t,
+    pub is_valid_tick: bool,
     /// Whether this event represents an extended trading hours sale
-    pub is_eth_trade: dxf_bool_t,
+    pub is_eth_trade: bool,
     /// TradeThroughExempt flag of this time and sale event
     pub trade_through_exempt: dxf_char_t,
     /// Whether this event represents a spread leg
-    pub is_spread_leg: dxf_bool_t,
+    pub is_spread_leg: bool,
     /// Scope of this TimeAndSale.\n\n Possible values: #dxf_osc_composite (TimeAndSale events) , #dxf_osc_regional (TimeAndSale& events)
     pub scope: dxf_order_scope_t,
 }
@@ -345,11 +345,11 @@ impl From<&dxf_time_and_sale_t> for TimeAndSaleData {
             buyer,
             seller,
             side: c_time_and_sale.side,
-            type_: c_time_and_sale.type_,
-            is_valid_tick: c_time_and_sale.is_valid_tick,
-            is_eth_trade: c_time_and_sale.is_eth_trade,
+            kind: c_time_and_sale.type_,
+            is_valid_tick: c_time_and_sale.is_valid_tick > 0,
+            is_eth_trade: c_time_and_sale.is_eth_trade > 0,
             trade_through_exempt: c_time_and_sale.trade_through_exempt,
-            is_spread_leg: c_time_and_sale.is_spread_leg,
+            is_spread_leg: c_time_and_sale.is_spread_leg > 0,
             scope: c_time_and_sale.scope,
         }
     }
