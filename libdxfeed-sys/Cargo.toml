@@ -9,7 +9,10 @@ links = "DXFeed"
 repository = "https://github.com/spotgamma/dxfeed-rust-api"
 
 [dependencies]
-serde = { version = "1.0.147", features = ["derive"] }
+serde = { version = "1.0.147", features = ["derive"], optional = true }
+
+[features]
+serde = ["dep:serde"]
 
 [build-dependencies]
 bindgen = "0.63.0"

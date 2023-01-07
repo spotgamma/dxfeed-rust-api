@@ -48,7 +48,9 @@ impl ParseCallbacks for CustomParser {
     }
 
     fn add_derives(&self, info: &DeriveInfo<'_>) -> Vec<String> {
-        if self.serde_types.contains(info.name) {
+        let enabled = std::env::var("CARGO_FEATURE_SERDE").unwrap_or("0".to_string()) == "1";
+        if enabled && self.serde_types.contains(info.name) {
+            eprintln!("Adding Serialize/Deserialize");
             vec!["Serialize".to_string(), "Deserialize".to_string()]
         } else {
             vec![]
@@ -68,8 +70,6 @@ impl CustomParser {
 }
 
 fn main() {
-    // let dst = cmake::build("dxfeed-c-api");
-    
     let dst = Config::new("dxfeed-c-api")
         .define("DISABLE_TLS", "ON")
         .define("BUILD_STATIC_LIBS", "ON")
