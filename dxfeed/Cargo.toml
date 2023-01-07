@@ -1,6 +1,6 @@
 [package]
 name = "dxfeed"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 description = "Ergonomic serializable rust-wrappers around libdxfeed-sys"
 license = "MIT"
@@ -12,4 +12,4 @@ repository = "https://github.com/spotgamma/dxfeed-rust-api"
 serde = { version = "1.0.147", features = ["derive"] }
 thiserror = "1.0.37"
 widestring = "1.0.2"
-libdxfeed-sys = { version = "0.1.4", features = ["serde"] }
+libdxfeed-sys = { version = "0.1.5", features = ["serde"] }
