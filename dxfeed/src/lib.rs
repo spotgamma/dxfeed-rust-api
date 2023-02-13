@@ -1,3 +1,4 @@
+use strum_macros::EnumString;
 use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
 use std::fmt;
@@ -40,6 +41,7 @@ pub const DXF_ET_CONFIGURATION: c_int = 1 << dx_event_id_dx_eid_configuration;
 pub const DXF_ET_UNUSED: c_uint = !((1 << dx_event_id_dx_eid_count) - 1);
 
 #[derive(Serialize, Deserialize, PartialEq, Eq, Ord, PartialOrd, Copy, Clone, Debug, Hash)]
+#[derive(EnumString)]
 pub enum EventType {
     Trade = DXF_ET_TRADE as isize,
     Quote = DXF_ET_QUOTE as isize,
@@ -601,10 +603,29 @@ pub fn add(left: usize, right: usize) -> usize {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::str::FromStr;
 
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn event_type_from_str() {
+        let name2expected: [(&str, EventType); 14] = [
+            ("Trade", EventType::Trade),
+            ("Quote", EventType::Quote),
+            ("Summary", EventType::Summary),
+            ("Profile", EventType::Profile),
+            ("Order", EventType::Order),
+            ("TimeAndSale", EventType::TimeAndSale),
+            ("Candle", EventType::Candle),
+            ("TradeETH", EventType::TradeETH),
+            ("SpreadOrder", EventType::SpreadOrder),
+            ("Greeks", EventType::Greeks),
+            ("TheoPrice", EventType::TheoPrice),
+            ("Underlying", EventType::Underlying),
+            ("Series", EventType::Series),
+            ("Configuration", EventType::Configuration),
+        ];
+        for (name, expected) in name2expected {
+            let result = EventType::from_str(name);
+            assert_eq!(result, Ok(expected));
+        }
     }
 }

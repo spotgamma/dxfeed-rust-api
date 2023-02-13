@@ -1,6 +1,6 @@
 [package]
 name = "dxfeed"
-version = "0.1.9"
+version = "0.1.10"
 edition = "2021"
 description = "Ergonomic serializable rust-wrappers around libdxfeed-sys"
 license = "MIT"
@@ -13,3 +13,5 @@ serde = { version = "1.0.147", features = ["derive"] }
 thiserror = "1.0.37"
 widestring = "1.0.2"
 libdxfeed-sys = { version = "0.1.5", features = ["serde"] }
+strum_macros = "0.24.3"
+strum = { version = "0.24.1", features = ["derive"] }
