@@ -1,6 +1,6 @@
-use std::fmt;
 use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
+use std::fmt;
 use std::os::raw::{c_int, c_uint};
 use thiserror::Error;
 use widestring::U32CString;
@@ -77,6 +77,27 @@ impl TryFrom<c_int> for EventType {
             DXF_ET_SERIES => Ok(EventType::Series),
             DXF_ET_CONFIGURATION => Ok(EventType::Configuration),
             _ => Err(format!("Unknown event type: {}", value)),
+        }
+    }
+}
+
+impl<T: AsRef<EventData>> From<T> for EventType {
+    fn from(event: T) -> Self {
+        match event.as_ref() {
+            EventData::Trade(_) => EventType::Trade,
+            EventData::Quote(_) => EventType::Quote,
+            EventData::Summary(_) => EventType::Summary,
+            EventData::Profile(_) => EventType::Profile,
+            EventData::Order(_) => EventType::Order,
+            EventData::TimeAndSale(_) => EventType::TimeAndSale,
+            EventData::Candle(_) => EventType::Candle,
+            EventData::TradeETH(_) => EventType::TradeETH,
+            EventData::SpreadOrder(_) => EventType::SpreadOrder,
+            EventData::Greeks(_) => EventType::Greeks,
+            EventData::TheoPrice(_) => EventType::TheoPrice,
+            EventData::Underlying(_) => EventType::Underlying,
+            EventData::Series(_) => EventType::Series,
+            EventData::Configuration(_) => EventType::Configuration,
         }
     }
 }
