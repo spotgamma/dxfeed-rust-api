@@ -60,7 +60,7 @@ pub enum EventType {
 }
 
 impl TryFrom<c_int> for EventType {
-    type Error = String;
+    type Error = Error;
 
     fn try_from(value: c_int) -> Result<Self, Self::Error> {
         match value {
@@ -78,7 +78,7 @@ impl TryFrom<c_int> for EventType {
             DXF_ET_UNDERLYING => Ok(EventType::Underlying),
             DXF_ET_SERIES => Ok(EventType::Series),
             DXF_ET_CONFIGURATION => Ok(EventType::Configuration),
-            _ => Err(format!("Unknown event type: {}", value)),
+            _ => Err(Error::Invalid(value)),
         }
     }
 }
