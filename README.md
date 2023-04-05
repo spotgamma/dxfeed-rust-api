@@ -25,4 +25,4 @@ NOTE: This won't run on MacOS yet. [see here](https://github.com/spotgamma/dxfee
 See the [dxfeed-c-api](https://github.com/dxFeed/dxfeed-c-api/blob/master/README.md) for the underlying C API types.
 
 ## Running
-Examples en route...
+https://github.com/spotgamma/dxfeed-rust-api/blob/a3d4946375a0ddec98b60b97bc7483396a4f4ee8/samples/quote_sub_example/src/main.rs#L65-L134
