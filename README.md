@@ -19,7 +19,7 @@ git submodule update --recursive --remote
 ```
 
 ## MacOS Caveat
-NOTE: This won't run on MacOS yet. [see here](https://github.com/spotgamma/dxfeed-rust-api/blame/main/libdxfeed-sys/README.md#L6)
+NOTE: This won't run on Mac M2 architecture yet. [see here](https://github.com/spotgamma/dxfeed-rust-api/blame/main/libdxfeed-sys/README.md#L6)
 
 ## dxfeed-c-api
 See the [dxfeed-c-api](https://github.com/dxFeed/dxfeed-c-api/blob/master/README.md) for the underlying C API types.
