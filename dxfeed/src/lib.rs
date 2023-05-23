@@ -1,10 +1,10 @@
-use strum_macros::EnumString;
 use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
 use std::fmt;
 use std::os::raw::{c_int, c_uint};
+use strum_macros::EnumString;
 use thiserror::Error;
-use widestring::U32CString;
+use widestring::WideCString;
 
 pub use libdxfeed_sys::*;
 
@@ -40,8 +40,9 @@ pub const DXF_ET_SERIES: c_int = 1 << dx_event_id_dx_eid_series;
 pub const DXF_ET_CONFIGURATION: c_int = 1 << dx_event_id_dx_eid_configuration;
 pub const DXF_ET_UNUSED: c_uint = !((1 << dx_event_id_dx_eid_count) - 1);
 
-#[derive(Serialize, Deserialize, PartialEq, Eq, Ord, PartialOrd, Copy, Clone, Debug, Hash)]
-#[derive(EnumString)]
+#[derive(
+    Serialize, Deserialize, PartialEq, Eq, Ord, PartialOrd, Copy, Clone, Debug, Hash, EnumString,
+)]
 pub enum EventType {
     Trade = DXF_ET_TRADE as isize,
     Quote = DXF_ET_QUOTE as isize,
@@ -188,12 +189,10 @@ pub struct ProfileEventData {
 // impl <T: AsRef<dxf_profile_t>> From<T> for ProfileEventData {
 impl From<&dxf_profile_t> for ProfileEventData {
     fn from(c_profile: &dxf_profile_t) -> Self {
-        let description = unsafe {
-            U32CString::from_ptr_str(c_profile.description as *const u32).to_string_lossy()
-        };
-        let status_reason = unsafe {
-            U32CString::from_ptr_str(c_profile.status_reason as *const u32).to_string_lossy()
-        };
+        let description =
+            unsafe { WideCString::from_ptr_str(c_profile.description).to_string_lossy() };
+        let status_reason =
+            unsafe { WideCString::from_ptr_str(c_profile.status_reason).to_string_lossy() };
         Self {
             beta: c_profile.beta as f64,
             eps: c_profile.eps as f64,
@@ -267,8 +266,7 @@ pub struct OrderEventData {
 impl From<&dxf_order_t> for OrderEventData {
     fn from(c_order: &dxf_order_t) -> Self {
         let mm_or_spread = unsafe {
-            U32CString::from_ptr_str(c_order.__bindgen_anon_1.market_maker as *const u32)
-                .to_string_lossy()
+            WideCString::from_ptr_str(c_order.__bindgen_anon_1.market_maker).to_string_lossy()
         };
         Self {
             source: c_order.source,
@@ -345,15 +343,10 @@ pub struct TimeAndSaleData {
 impl From<&dxf_time_and_sale_t> for TimeAndSaleData {
     fn from(c_time_and_sale: &dxf_time_and_sale_t) -> Self {
         let exchange_sale_conditions = unsafe {
-            U32CString::from_ptr_str(c_time_and_sale.exchange_sale_conditions as *const u32)
-                .to_string_lossy()
+            WideCString::from_ptr_str(c_time_and_sale.exchange_sale_conditions).to_string_lossy()
         };
-        let buyer = unsafe {
-            U32CString::from_ptr_str(c_time_and_sale.buyer as *const u32).to_string_lossy()
-        };
-        let seller = unsafe {
-            U32CString::from_ptr_str(c_time_and_sale.seller as *const u32).to_string_lossy()
-        };
+        let buyer = unsafe { WideCString::from_ptr_str(c_time_and_sale.buyer).to_string_lossy() };
+        let seller = unsafe { WideCString::from_ptr_str(c_time_and_sale.seller).to_string_lossy() };
         Self {
             event_flags: c_time_and_sale.event_flags,
             index: c_time_and_sale.index,
@@ -401,9 +394,8 @@ pub struct SpreadOrderData {
 
 impl From<&dx_spread_order_t> for SpreadOrderData {
     fn from(c_spread_order: &dx_spread_order_t) -> Self {
-        let spread_symbol = unsafe {
-            U32CString::from_ptr_str(c_spread_order.spread_symbol as *const u32).to_string_lossy()
-        };
+        let spread_symbol =
+            unsafe { WideCString::from_ptr_str(c_spread_order.spread_symbol).to_string_lossy() };
         Self {
             index: c_spread_order.index,
             time: c_spread_order.time,
@@ -433,8 +425,7 @@ pub struct ConfigurationData {
 
 impl From<&dxf_configuration_t> for ConfigurationData {
     fn from(c_config: &dxf_configuration_t) -> Self {
-        let object =
-            unsafe { U32CString::from_ptr_str(c_config.object as *const u32).to_string_lossy() };
+        let object = unsafe { WideCString::from_ptr_str(c_config.object).to_string_lossy() };
         Self {
             version: c_config.version,
             object,
@@ -447,8 +438,13 @@ pub enum Error {
     #[error("Invalid event_type: `{0}`")]
     Invalid(c_int),
 
-    #[error("Converting from U32CString")]
-    Utf32Error(#[from] widestring::error::Utf32Error),
+    #[cfg(unix)]
+    #[error("Converting from WideCString")]
+    UtfError(#[from] widestring::error::Utf32Error),
+
+    #[cfg(windows)]
+    #[error("Converting from WideCString")]
+    UtfError(#[from] widestring::error::Utf16Error),
 
     #[error("Unknown error")]
     Unknown,
@@ -590,7 +586,7 @@ impl Event {
         raw_sym: dxf_const_string_t,
         data: *const dxf_event_data_t,
     ) -> Result<Self, Error> {
-        let c_sym = unsafe { U32CString::from_ptr_str(raw_sym as *const u32) };
+        let c_sym = unsafe { WideCString::from_ptr_str(raw_sym as *const _) };
         let sym = c_sym.to_string()?;
         let event_data = EventData::try_get_event_data(event_type, data)?;
         Ok(Event::new(sym, event_data))
