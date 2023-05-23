@@ -117,7 +117,6 @@ fn main() {
         // included header files changed.
         .parse_callbacks(Box::new(CustomParser::new()))
         .derive_partialeq(true)
-        .rustfmt_bindings(true)
         // .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         // Finish the builder and generate the bindings.
         .generate()
