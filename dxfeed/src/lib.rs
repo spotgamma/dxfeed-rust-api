@@ -190,10 +190,10 @@ pub struct ProfileEventData {
 impl From<&dxf_profile_t> for ProfileEventData {
     fn from(c_profile: &dxf_profile_t) -> Self {
         let description = unsafe {
-            WideCString::from_ptr_str(c_profile.description as *const u32).to_string_lossy()
+            WideCString::from_ptr_str(c_profile.description as *const _).to_string_lossy()
         };
         let status_reason = unsafe {
-            WideCString::from_ptr_str(c_profile.status_reason as *const u32).to_string_lossy()
+            WideCString::from_ptr_str(c_profile.status_reason as *const _).to_string_lossy()
         };
         Self {
             beta: c_profile.beta as f64,
@@ -268,7 +268,7 @@ pub struct OrderEventData {
 impl From<&dxf_order_t> for OrderEventData {
     fn from(c_order: &dxf_order_t) -> Self {
         let mm_or_spread = unsafe {
-            WideCString::from_ptr_str(c_order.__bindgen_anon_1.market_maker as *const u32)
+            WideCString::from_ptr_str(c_order.__bindgen_anon_1.market_maker as *const _)
                 .to_string_lossy()
         };
         Self {
@@ -346,14 +346,14 @@ pub struct TimeAndSaleData {
 impl From<&dxf_time_and_sale_t> for TimeAndSaleData {
     fn from(c_time_and_sale: &dxf_time_and_sale_t) -> Self {
         let exchange_sale_conditions = unsafe {
-            WideCString::from_ptr_str(c_time_and_sale.exchange_sale_conditions as *const u32)
+            WideCString::from_ptr_str(c_time_and_sale.exchange_sale_conditions as *const _)
                 .to_string_lossy()
         };
         let buyer = unsafe {
-            WideCString::from_ptr_str(c_time_and_sale.buyer as *const u32).to_string_lossy()
+            WideCString::from_ptr_str(c_time_and_sale.buyer as *const _).to_string_lossy()
         };
         let seller = unsafe {
-            WideCString::from_ptr_str(c_time_and_sale.seller as *const u32).to_string_lossy()
+            WideCString::from_ptr_str(c_time_and_sale.seller as *const _).to_string_lossy()
         };
         Self {
             event_flags: c_time_and_sale.event_flags,
@@ -403,7 +403,7 @@ pub struct SpreadOrderData {
 impl From<&dx_spread_order_t> for SpreadOrderData {
     fn from(c_spread_order: &dx_spread_order_t) -> Self {
         let spread_symbol = unsafe {
-            WideCString::from_ptr_str(c_spread_order.spread_symbol as *const u32).to_string_lossy()
+            WideCString::from_ptr_str(c_spread_order.spread_symbol as *const _).to_string_lossy()
         };
         Self {
             index: c_spread_order.index,
@@ -435,7 +435,7 @@ pub struct ConfigurationData {
 impl From<&dxf_configuration_t> for ConfigurationData {
     fn from(c_config: &dxf_configuration_t) -> Self {
         let object =
-            unsafe { WideCString::from_ptr_str(c_config.object as *const u32).to_string_lossy() };
+            unsafe { WideCString::from_ptr_str(c_config.object as *const _).to_string_lossy() };
         Self {
             version: c_config.version,
             object,
