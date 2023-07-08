@@ -83,7 +83,7 @@ fn main() {
         println!("cargo:rustc-link-lib=stdc++");
     }
 
-    #[cfg(macos)]
+    #[cfg(target_os = "macos", target_os = "ios")]
     {
         println!("cargo:rustc-link-search=native={}/build", dst.display());
         println!("cargo:rustc-link-lib=c++");
