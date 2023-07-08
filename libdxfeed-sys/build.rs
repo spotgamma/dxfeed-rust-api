@@ -77,16 +77,18 @@ fn main() {
 
     println!("cargo:rustc-link-search=native={}", dst.display());
 
+    // TODO: `cc` crate should help with this logic
     #[cfg(unix)]
     {
         println!("cargo:rustc-link-search=native={}/build", dst.display());
-        println!("cargo:rustc-link-lib=stdc++");
-    }
-
-    #[cfg(target_os = "macos", target_os = "ios")]
-    {
-        println!("cargo:rustc-link-search=native={}/build", dst.display());
-        println!("cargo:rustc-link-lib=c++");
+        #[cfg(any(target_os = "macos", target_os = "ios"))]
+        {
+            println!("cargo:rustc-link-lib=c++");
+        }
+        #[cfg(all(not(target_os = "macos"), not(target_os = "ios")))]
+        {
+            println!("cargo:rustc-link-lib=stdc++");
+        }
     }
 
     #[cfg(windows)]
