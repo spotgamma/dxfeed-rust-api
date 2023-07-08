@@ -78,18 +78,21 @@ fn main() {
     println!("cargo:rustc-link-search=native={}", dst.display());
 
     #[cfg(unix)]
-    println!("cargo:rustc-link-search=native={}/build", dst.display());
+    {
+        println!("cargo:rustc-link-search=native={}/build", dst.display());
+        println!("cargo:rustc-link-lib=stdc++");
+    }
+
+    #[cfg(macos)]
+    {
+        println!("cargo:rustc-link-search=native={}/build", dst.display());
+        println!("cargo:rustc-link-lib=c++");
+    }
 
     #[cfg(windows)]
     {
-        println!(
-            "cargo:rustc-link-search=native={}/build/Debug",
-            dst.display()
-        );
-        println!(
-            "cargo:rustc-link-search=native={}/build/Release",
-            dst.display()
-        );
+        println!("cargo:rustc-link-search=native={}/build/Debug", dst.display());
+        println!("cargo:rustc-link-search=native={}/build/Release", dst.display());
     }
 
     // println!("cargo:rustc-link-search={}", dst.display());
@@ -97,9 +100,6 @@ fn main() {
     let profile = std::env::var("PROFILE").unwrap();
     let suffix = if profile == "debug" { "d" } else { "" };
     println!("cargo:rustc-link-lib=static={}{}", "DXFeed", suffix);
-
-    #[cfg(unix)]
-    println!("cargo:rustc-link-lib=stdc++");
 
     // Tell cargo to invalidate the built crate whenever the wrapper changes
     println!("cargo:rerun-if-changed=wrapper.h");
