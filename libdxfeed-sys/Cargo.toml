@@ -1,6 +1,6 @@
 [package]
 name = "libdxfeed-sys"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["John Watson <jrwats@gmail.com>"]
 edition = "2018"
 description = "rust bindings for dxfeed-c-api"
