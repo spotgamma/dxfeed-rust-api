@@ -122,7 +122,7 @@ impl EventType {
 
 // A Rustified dxf_profile_t. namely for converting non-serializable raw C strings (pointers) to
 // Strings.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ProfileEventData {
     ///  The correlation coefficient of the instrument to the S&P500 index (calculated, or received from other data providers)
     pub beta: f64,
@@ -219,7 +219,7 @@ impl From<&dxf_profile_t> for ProfileEventData {
 }
 
 //  dxf_order_t, but dealing with the string-containingan
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct OrderEventData {
     /// Source of this order
     pub source: [dxf_char_t; 17usize],
@@ -298,7 +298,7 @@ impl From<&dxf_order_t> for OrderEventData {
 }
 
 // dxf_time_and_sale / dxf_time_and_sale_t
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct TimeAndSaleData {
     /// Transactional event flags. See: #dxf_event_flag
     pub event_flags: dxf_event_flags_t,
@@ -380,7 +380,7 @@ impl From<&dxf_time_and_sale_t> for TimeAndSaleData {
 }
 
 // dx_spread_order_t
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SpreadOrderData {
     pub index: dxf_int_t,
     pub time: dxf_int_t,
